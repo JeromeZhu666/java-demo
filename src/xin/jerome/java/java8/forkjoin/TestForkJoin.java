@@ -1,4 +1,4 @@
-package xin.jerome.forkjoin;
+package xin.jerome.java.java8.forkjoin;
 
 import org.junit.Test;
 

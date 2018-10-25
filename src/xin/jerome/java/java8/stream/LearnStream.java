@@ -1,4 +1,4 @@
-package xin.jerome.stream;
+package xin.jerome.java.java8.stream;
 
 import org.junit.Test;
 

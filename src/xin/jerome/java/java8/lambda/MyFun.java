@@ -1,4 +1,4 @@
-package xin.jerome.lambda;
+package xin.jerome.java.java8.lambda;
 
 /**
  * 自定义函数式接口

@@ -1,4 +1,4 @@
-package xin.jerome.optional;
+package xin.jerome.java.java8.optional;
 
 public class Employee {
 

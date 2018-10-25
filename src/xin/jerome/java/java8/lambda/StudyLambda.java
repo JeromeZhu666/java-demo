@@ -1,4 +1,4 @@
-package xin.jerome.lambda;
+package xin.jerome.java.java8.lambda;
 
 import org.junit.Test;
 

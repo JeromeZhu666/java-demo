@@ -1,9 +1,8 @@
-package xin.jerome.lambda;
+package xin.jerome.java.java8.lambda;
 
 import org.junit.Test;
 
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**

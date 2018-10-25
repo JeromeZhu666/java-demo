@@ -1,4 +1,4 @@
-package xin.jerome.forkjoin;
+package xin.jerome.java.java8.forkjoin;
 
 import java.util.concurrent.RecursiveTask;
 
