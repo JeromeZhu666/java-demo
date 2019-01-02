@@ -142,6 +142,58 @@ public class TestByteBuffer {
         System.out.println("byteBuffer.hasRemaining : " + byteBuffer.hasRemaining());
     }
 
+
+    /**
+     * 测试包装数据处理
+     */
+    @Test
+    public void testWrap() {
+        byte[] bytes = new byte[]{1, 2, 3, 4, 5, 6};
+        ByteBuffer byteBuffer1 = ByteBuffer.wrap(bytes);
+        System.out.println(String.format("byteBuffer1 [capacity：%d, limit：%d, position: %d]",
+                byteBuffer1.capacity(), byteBuffer1.limit(), byteBuffer1.position()));
+        ByteBuffer byteBuffer2 = ByteBuffer.wrap(bytes, 2, 4);
+        System.out.println(String.format("byteBuffer2 [capacity：%d, limit：%d, position: %d]",
+                byteBuffer2.capacity(), byteBuffer2.limit(), byteBuffer2.position()));
+    }
+
+    /**
+     * 测试创建只读缓存区
+     */
+    @Test
+    public void testCreateReadOnlyBuffer() {
+        byte[] bytes = new byte[]{1, 2, 3, 4, 5};
+        ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
+        ByteBuffer readOnlyBuffer = byteBuffer.asReadOnlyBuffer();
+        System.out.println("byteBuffer.isReadOnly() = " + byteBuffer.isReadOnly());
+        System.out.println("readOnlyBuffer.isReadOnly() = " + readOnlyBuffer.isReadOnly());
+        readOnlyBuffer.putInt(2);
+    }
+
+    /**
+     * 测试缓存区的压缩方法
+     */
+    @Test
+    public void testCompact() {
+        byte[] bytes = new byte[]{1, 2, 3, 4, 5, 6, 7};
+        ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
+        System.out.println(String.format("byteBuffer1 [capacity：%d, limit：%d, position: %d]",
+                byteBuffer.capacity(), byteBuffer.limit(), byteBuffer.position()));
+        // 执行两次get() 操作
+        byteBuffer.get();
+        byteBuffer.get();
+        System.out.println(String.format("byteBuffer1 [capacity：%d, limit：%d, position: %d]",
+                byteBuffer.capacity(), byteBuffer.limit(), byteBuffer.position()));
+        byteBuffer.compact();
+        System.out.println(String.format("byteBuffer1 [capacity：%d, limit：%d, position: %d]",
+                byteBuffer.capacity(), byteBuffer.limit(), byteBuffer.position()));
+        byte[] array = byteBuffer.array();
+        for (int i = 0; i < byteBuffer.position(); i++) {
+            System.out.print(array[i]);
+        }
+    }
+
+
     /**
      * 演示  position<=limit<=capacity
      * capacity : 容量，声明的缓冲区的容量，一旦声明不能改变
@@ -217,6 +269,7 @@ public class TestByteBuffer {
         ByteBuffer direct = ByteBuffer.allocateDirect(1024);
         System.out.println(direct.isDirect());
     }
+
 
     private void printBuffer(ByteBuffer byteBuffer) {
         System.out.println(String.format("Buffer [position：%d,limit：%d,capacity：%d]",
