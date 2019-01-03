@@ -149,13 +149,13 @@ public class TestByteBuffer {
     public void testAllocate() {
         // 创建堆缓冲区
         ByteBuffer heapByteBuffer = ByteBuffer.allocate(666);
-        System.out.print(String.format("Buffer [capacity：%d, limit：%d, position: %d]",
+        System.out.print(String.format("heapByteBuffer [capacity：%d, limit：%d, position: %d]",
                 heapByteBuffer.capacity(), heapByteBuffer.limit(), heapByteBuffer.position()));
         System.out.println(" heapByteBuffer.isDirect : " + heapByteBuffer.isDirect());
         // 创建直接缓冲区
         ByteBuffer directByteBuffer = ByteBuffer.allocateDirect(555);
-        System.out.print(String.format("Buffer [capacity：%d, limit：%d, position: %d]",
-                heapByteBuffer.capacity(), heapByteBuffer.limit(), heapByteBuffer.position()));
+        System.out.print(String.format("directByteBuffer [capacity：%d, limit：%d, position: %d]",
+                directByteBuffer.capacity(), directByteBuffer.limit(), directByteBuffer.position()));
         System.out.println(" directByteBuffer.isDirect : " + directByteBuffer.isDirect());
     }
 
@@ -174,6 +174,91 @@ public class TestByteBuffer {
     }
 
     /**
+     * 测试相对位置的读写，位置position自增
+     */
+    @Test
+    public void testRelativeReadAndWrite() {
+        ByteBuffer byteBuffer = ByteBuffer.allocate(5);
+        // put
+        System.out.println(String.format("byteBuffer before put [capacity：%d, limit：%d, position: %d]",
+                byteBuffer.capacity(), byteBuffer.limit(), byteBuffer.position()));
+        byteBuffer.put((byte) 2);
+        System.out.println(String.format("byteBuffer after put [capacity：%d, limit：%d, position: %d]",
+                byteBuffer.capacity(), byteBuffer.limit(), byteBuffer.position()));
+        // 切换到读的最适合状态
+        byteBuffer.flip();
+        // get
+        System.out.println(String.format("byteBuffer before get [capacity：%d, limit：%d, position: %d]",
+                byteBuffer.capacity(), byteBuffer.limit(), byteBuffer.position()));
+        System.out.println(byteBuffer.get());
+        System.out.println(String.format("byteBuffer after get [capacity：%d, limit：%d, position: %d]",
+                byteBuffer.capacity(), byteBuffer.limit(), byteBuffer.position()));
+    }
+
+    /**
+     * 测试绝对位置的读写，位置position不变
+     */
+    @Test
+    public void testAbsoluteReadAndWrite() {
+        byte[] bytes = new byte[]{1, 2, 3, 4};
+        ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
+        // put
+        System.out.println(String.format("byteBuffer before put [capacity：%d, limit：%d, position: %d]",
+                byteBuffer.capacity(), byteBuffer.limit(), byteBuffer.position()));
+        byteBuffer.put(2,(byte) 33);
+        System.out.println(String.format("byteBuffer after put [capacity：%d, limit：%d, position: %d]",
+                byteBuffer.capacity(), byteBuffer.limit(), byteBuffer.position()));
+        // get
+        System.out.println(String.format("byteBuffer before get [capacity：%d, limit：%d, position: %d]",
+                byteBuffer.capacity(), byteBuffer.limit(), byteBuffer.position()));
+        System.out.println(byteBuffer.get(2));
+        System.out.println(String.format("byteBuffer after get [capacity：%d, limit：%d, position: %d]",
+                byteBuffer.capacity(), byteBuffer.limit(), byteBuffer.position()));
+    }
+
+    /**
+     * 测试批量读写
+     */
+    @Test
+    public void testBatchReadAndWrite() {
+        byte[] src = new byte[]{1, 2, 3, 4, 5, 6};
+        byte[] dst = new byte[2];
+        ByteBuffer byteBuffer = ByteBuffer.allocate(10);
+        // put
+        System.out.println(String.format("byteBuffer before put [capacity：%d, limit：%d, position: %d]",
+                byteBuffer.capacity(), byteBuffer.limit(), byteBuffer.position()));
+        byteBuffer.put(src, 1, 5);
+        System.out.println(String.format("byteBuffer after put [capacity：%d, limit：%d, position: %d]",
+                byteBuffer.capacity(), byteBuffer.limit(), byteBuffer.position()));
+        byteBuffer.flip();
+        // get
+        System.out.println(String.format("byteBuffer before get [capacity：%d, limit：%d, position: %d]",
+                byteBuffer.capacity(), byteBuffer.limit(), byteBuffer.position()));
+        byteBuffer.get(dst, 0, dst.length);
+        for (int i = 0; i < dst.length; i++) {
+            System.out.print(dst[i] + " ");
+        }
+        System.out.println(String.format("\nbyteBuffer after get [capacity：%d, limit：%d, position: %d]",
+                byteBuffer.capacity(), byteBuffer.limit(), byteBuffer.position()));
+    }
+
+    /**
+     * 测试slice
+     */
+    @Test
+    public void testSlice() {
+        byte[] src = new byte[]{1, 2, 3, 4, 5, 6, 7, 8};
+        ByteBuffer byteBuffer = ByteBuffer.wrap(src);
+        byteBuffer.position(3);
+        System.out.println(String.format("byteBuffer [capacity：%d, limit：%d, position: %d, remaining: %d]",
+                byteBuffer.capacity(), byteBuffer.limit(), byteBuffer.position(), byteBuffer.remaining()));
+        ByteBuffer sliceBuffer = byteBuffer.slice();
+        System.out.println(String.format("sliceBuffer [capacity：%d, limit：%d, position: %d, remaining: %d]",
+                sliceBuffer.capacity(), sliceBuffer.limit(), sliceBuffer.position(), sliceBuffer.remaining()));
+        System.out.println(String.format("sliceBuffer.arrayOffset() = %d", sliceBuffer.arrayOffset()));
+    }
+
+    /**
      * 测试创建只读缓存区
      */
     @Test
@@ -183,7 +268,6 @@ public class TestByteBuffer {
         ByteBuffer readOnlyBuffer = byteBuffer.asReadOnlyBuffer();
         System.out.println("byteBuffer.isReadOnly() = " + byteBuffer.isReadOnly());
         System.out.println("readOnlyBuffer.isReadOnly() = " + readOnlyBuffer.isReadOnly());
-        readOnlyBuffer.putInt(2);
     }
 
     /**
@@ -193,24 +277,21 @@ public class TestByteBuffer {
     public void testCompact() {
         byte[] bytes = new byte[]{1, 2, 3, 4, 5, 6, 7};
         ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
-        System.out.println(String.format("byteBuffer1 [capacity：%d, limit：%d, position: %d]",
+        System.out.println(String.format("byteBuffer [capacity：%d, limit：%d, position: %d]",
                 byteBuffer.capacity(), byteBuffer.limit(), byteBuffer.position()));
         // 执行两次get() 操作
         byteBuffer.get();
         byteBuffer.get();
-        System.out.println(String.format("byteBuffer1 [capacity：%d, limit：%d, position: %d]",
+        System.out.println(String.format("byteBuffer [capacity：%d, limit：%d, position: %d]",
                 byteBuffer.capacity(), byteBuffer.limit(), byteBuffer.position()));
         byteBuffer.compact();
-        System.out.println(String.format("byteBuffer1 [capacity：%d, limit：%d, position: %d]",
+        System.out.println(String.format("byteBuffer [capacity：%d, limit：%d, position: %d]",
                 byteBuffer.capacity(), byteBuffer.limit(), byteBuffer.position()));
         byte[] array = byteBuffer.array();
         for (int i = 0; i < byteBuffer.position(); i++) {
             System.out.print(array[i]);
         }
     }
-
-
-
 
 
     /**
