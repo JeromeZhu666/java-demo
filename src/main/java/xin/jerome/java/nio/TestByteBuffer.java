@@ -143,6 +143,24 @@ public class TestByteBuffer {
     }
 
     /**
+     * 测试分配空间
+     */
+    @Test
+    public void testAllocate() {
+        // 创建堆缓冲区
+        ByteBuffer heapByteBuffer = ByteBuffer.allocate(666);
+        System.out.print(String.format("Buffer [capacity：%d, limit：%d, position: %d]",
+                heapByteBuffer.capacity(), heapByteBuffer.limit(), heapByteBuffer.position()));
+        System.out.println(" heapByteBuffer.isDirect : " + heapByteBuffer.isDirect());
+        // 创建直接缓冲区
+        ByteBuffer directByteBuffer = ByteBuffer.allocateDirect(555);
+        System.out.print(String.format("Buffer [capacity：%d, limit：%d, position: %d]",
+                heapByteBuffer.capacity(), heapByteBuffer.limit(), heapByteBuffer.position()));
+        System.out.println(" directByteBuffer.isDirect : " + directByteBuffer.isDirect());
+    }
+
+
+    /**
      * 演示  position<=limit<=capacity
      * capacity : 容量，声明的缓冲区的容量，一旦声明不能改变
      * limit : 界限，缓冲区中可以操作的范围
