@@ -142,6 +142,22 @@ public class TestByteBuffer {
         System.out.println("byteBuffer.hasRemaining : " + byteBuffer.hasRemaining());
     }
 
+    /**
+     * 测试分配空间
+     */
+    @Test
+    public void testAllocate() {
+        // 创建堆缓冲区
+        ByteBuffer heapByteBuffer = ByteBuffer.allocate(666);
+        System.out.print(String.format("Buffer [capacity：%d, limit：%d, position: %d]",
+                heapByteBuffer.capacity(), heapByteBuffer.limit(), heapByteBuffer.position()));
+        System.out.println(" heapByteBuffer.isDirect : " + heapByteBuffer.isDirect());
+        // 创建直接缓冲区
+        ByteBuffer directByteBuffer = ByteBuffer.allocateDirect(555);
+        System.out.print(String.format("Buffer [capacity：%d, limit：%d, position: %d]",
+                heapByteBuffer.capacity(), heapByteBuffer.limit(), heapByteBuffer.position()));
+        System.out.println(" directByteBuffer.isDirect : " + directByteBuffer.isDirect());
+    }
 
     /**
      * 测试包装数据处理
@@ -194,22 +210,7 @@ public class TestByteBuffer {
     }
 
 
-    /**
-     * 测试分配空间
-     */
-    @Test
-    public void testAllocate() {
-        // 创建堆缓冲区
-        ByteBuffer heapByteBuffer = ByteBuffer.allocate(666);
-        System.out.print(String.format("Buffer [capacity：%d, limit：%d, position: %d]",
-                heapByteBuffer.capacity(), heapByteBuffer.limit(), heapByteBuffer.position()));
-        System.out.println(" heapByteBuffer.isDirect : " + heapByteBuffer.isDirect());
-        // 创建直接缓冲区
-        ByteBuffer directByteBuffer = ByteBuffer.allocateDirect(555);
-        System.out.print(String.format("Buffer [capacity：%d, limit：%d, position: %d]",
-                heapByteBuffer.capacity(), heapByteBuffer.limit(), heapByteBuffer.position()));
-        System.out.println(" directByteBuffer.isDirect : " + directByteBuffer.isDirect());
-    }
+
 
 
     /**
