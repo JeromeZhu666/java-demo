@@ -4,8 +4,6 @@ import xin.jerome.java.reflect.MyClassLoader;
 
 /**
  * 封装加载类的信息
- * @author liuyazhuang
- *
  */
 public class LoadInfo {
 	//自定义的类加载

@@ -7,7 +7,7 @@ public class MyManager implements BaseManager {
 
 	@Override
 	public void logic() {
-		System.out.println("此类正在热部署！123");
+		System.out.println("MyManager 正在热加载！");
 	}
 
 }
