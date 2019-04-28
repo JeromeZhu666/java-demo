@@ -17,4 +17,7 @@ public class Dog {
         return "Hello " + word;
     }
 
+    static {
+        System.out.println("Dog initialized.");
+    }
 }
