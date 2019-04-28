@@ -6,7 +6,7 @@ package xin.jerome.java.reflect;
  * @author Jerome Zhu
  * @since 2019.04.28 17:57
  */
-public class TestMyClassLoder {
+public class TestMyClassLoader {
 
     public static void main(String[] args) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
         MyClassLoader myClassLoader = new MyClassLoader("C:/Users/Administrator/Desktop/","Dog");
