@@ -6,7 +6,7 @@ package xin.jerome.java.interview;
  * @author Jerome Zhu
  * @since 2019.06.07 15:33
  */
-public class TestEquals {
+public class EqualsMethod {
 
     public static void main(String[] args) {
 //        ==和equals的区别
