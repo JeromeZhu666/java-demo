@@ -1,7 +1,7 @@
 package xin.jerome.java.interview;
 
 /**
- * ==和equals()的区别
+ * equals()方法相关
  *
  * @author Jerome Zhu
  * @since 2019.06.07 15:33
@@ -9,6 +9,26 @@ package xin.jerome.java.interview;
 public class TestEquals {
 
     public static void main(String[] args) {
+//        ==和equals的区别
+//        compareEquals();
+//        两个hashCode()相同的对象,equals()的结果不一定true
+        sameHashCodeEqualsResult();
+    }
+
+    /**
+     * 两个hashCode()相同的对象,equals()的结果不一定true
+     */
+    private static void sameHashCodeEqualsResult() {
+        String str1 = "通话";
+        String str2 = "重地";
+        String.format("str1 HashCode:%d,str2 HashCode:%d.",str1.hashCode(),str2.hashCode());
+        System.out.println(str1.equals(str2)); // false
+    }
+
+    /**
+     * ==和equals的区别
+     */
+    private static void compareEquals() {
         String a = new String("ab"); // a 为一个对象引用
         String b = new String("ab"); // b 为另一个引用,对象的内容一样
         String aa = "ab"; // 放在常量池中
@@ -29,6 +49,5 @@ public class TestEquals {
         System.out.println(p == pp);// true 同一个对象
         System.out.println(pp == qq);// true // 因为 pp 会自动拆箱转换成int类型
         System.out.println(pp.equals(qq));// 因为 1 这个int类型的值会被自动装箱提升为Integer类型
-
     }
 }
