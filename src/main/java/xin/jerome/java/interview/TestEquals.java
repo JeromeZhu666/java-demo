@@ -21,7 +21,7 @@ public class TestEquals {
     private static void sameHashCodeEqualsResult() {
         String str1 = "通话";
         String str2 = "重地";
-        String.format("str1 HashCode:%d,str2 HashCode:%d.",str1.hashCode(),str2.hashCode());
+        System.out.println(String.format("str1 HashCode:%d,str2 HashCode:%d.", str1.hashCode(), str2.hashCode()));
         System.out.println(str1.equals(str2)); // false
     }
 
